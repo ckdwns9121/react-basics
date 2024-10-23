@@ -12,6 +12,8 @@ export default function SignupPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const { mutate: handleSignup, isSuccess } = useSignup();
 
+  const isSignupBtnActive = !!email && !!password && password === confirmPassword;
+
   useEffect(() => {
     if (isSuccess) {
       alert("회원가입 성공");
@@ -21,68 +23,16 @@ export default function SignupPage() {
 
   return (
     <Wrapper>
-      <div>
-        <Header>
-          <Title>이메일로 회원가입</Title>
-          <CloseButton>
-            <img
-              alt="close"
-              src={`https://kr.object.ncloudstorage.com/icons/ic-close-btn.svg`}
-            />
-          </CloseButton>
-        </Header>
-        <InputSection>
-          <InputWrapper>
-            <Label htmlFor="emailInput">이메일</Label>
-            <Input
-              id="emailInput"
-              data-cy="emailInput"
-              type="text"
-              placeholder="이메일을 입력해주세요"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setEmail(e.target.value)
-              }
-            />
-          </InputWrapper>
-          <InputWrapper>
-            <Label htmlFor="passwordInput">비밀번호</Label>
-            <Input
-              id="passwordInput"
-              data-cy="passwordInput"
-              type="password"
-              placeholder="비밀번호를 입력해주세요"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setPassword(e.target.value)
-              }
-            />
-          </InputWrapper>
-          <InputWrapper>
-            <Label htmlFor="confirmPasswordInput">비밀번호 확인</Label>
-            <Input
-              id="confirmPasswordInput"
-              data-cy="confirmPasswordInput"
-              type="password"
-              placeholder="비밀번호를 한 번 더 입력해주세요"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setConfirmPassword(e.target.value)
-              }
-            />
-          </InputWrapper>
-          {password != confirmPassword && (
-            <ErrorMessage data-testid="error-message">
-              비밀번호가 일치하지 않습니다
-            </ErrorMessage>
-          )}
-        </InputSection>
-      </div>
-
-      <Button
+      <Input data-cy="emailInput" value={email} onChange={(e) => setEmail(e.target.value)} />
+      <Input data-cy="passwordInput" onChange={(e) => setPassword(e.target.value)} />
+      <Input data-cy="confirmPasswordInput" onChange={(e) => setConfirmPassword(e.target.value)} />
+      <SignupButton
         data-cy="signupButton"
-        primary={true}
-        label="회원가입"
-        disabled={!email || !password || password != confirmPassword}
+        disabled={!isSignupBtnActive}
         onClick={() => handleSignup({ username: email, password })}
-      />
+      >
+        회원가입
+      </SignupButton>
     </Wrapper>
   );
 }
@@ -146,8 +96,7 @@ const SignupButton = styled.button`
   width: 100%;
   padding: 16px;
   border-radius: 4px;
-  background-color: ${(props) =>
-    props.disabled ? "var(--mono-100)" : "var(--primary)"};
+  background-color: ${(props) => (props.disabled ? "var(--mono-100)" : "var(--primary)")};
   color: ${(props) => (props.disabled ? "var(--mono-200)" : "var(--white)")};
   margin-bottom: 24px;
 `;

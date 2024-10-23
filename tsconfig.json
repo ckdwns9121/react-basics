@@ -24,6 +24,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "cypress/e2e/2-order/order-cy.ts", "**/*.ts"],
+  "include": ["src", "cypress/e2e/2-order/order-cy.ts", "**/*.ts", "cypress/e2e/0-signup/signup.cy.js"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
